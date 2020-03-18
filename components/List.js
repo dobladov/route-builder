@@ -1,40 +1,45 @@
 import React from 'react';
 import { Menu, Trash } from 'react-feather';
 import '../styles/components/List.css';
+// Placeholder for dragging elements
+const placeholder = document.createElement('li');
+placeholder.innerHTML = 'Move here';
+placeholder.className = 'placeholder';
 const List = ({ waypoints, setWaypoints }) => {
-    let draggedItemIndex = null;
-    let newOrder = null;
-    const onDragStart = (e, index) => {
-        draggedItemIndex = index;
+    let dragged;
+    let over;
+    const onDragStart = (e) => {
+        dragged = e.currentTarget;
         e.dataTransfer.effectAllowed = 'move';
-        e.dataTransfer.setData('text/html', e.target.parentNode);
-        e.dataTransfer.setDragImage(e.target.parentNode, 20, 20);
-        newOrder = null;
+        e.dataTransfer.setData('text/html', dragged);
+        e.dataTransfer.setDragImage(dragged, 20, 20);
     };
-    const onDragOver = (index) => {
-        const draggedOverItemIndex = index;
-        // Do nothing if the item drags over itself
-        if (draggedItemIndex === draggedOverItemIndex) {
-            return;
+    const onDragOver = (e) => {
+        e.preventDefault();
+        dragged.style.display = 'none';
+        if (e.target.dataset.id) {
+            over = e.target;
+            e.target.parentNode.insertBefore(placeholder, e.target);
         }
-        // Fix bug of dragging outside
-        const movedItem = waypoints[draggedItemIndex];
-        newOrder = waypoints.slice();
-        newOrder.splice(draggedItemIndex, 1);
-        newOrder.splice(draggedOverItemIndex, 0, movedItem);
     };
     const onDragEnd = () => {
-        if (newOrder) {
-            setWaypoints(newOrder);
-            newOrder = null;
-        }
+        dragged.style.display = 'flex';
+        dragged.parentNode.removeChild(placeholder);
+        const newWaypoints = waypoints.slice();
+        const from = Number(dragged.dataset.id);
+        const to = Number(over.dataset.id);
+        newWaypoints.splice(to, 0, newWaypoints.splice(from, 1)[0]);
+        setWaypoints(newWaypoints);
     };
-    return (React.createElement("ul", { className: "List" }, waypoints.map((waypoint, i) => (React.createElement("li", { key: `${waypoint.lat}${waypoint.lng}`, onDragOver: () => onDragOver(i) },
-        React.createElement("div", { draggable: true, onDragStart: (e) => onDragStart(e, i), onDragEnd: onDragEnd },
-            React.createElement(Menu, null)),
-        React.createElement("span", { className: "listTitle" }, `Waypoint ${i + 1}`),
-        React.createElement(Trash, { onClick: () => {
-                setWaypoints(waypoints.filter((w, index) => index !== i));
-            } }))))));
+    return (React.createElement("ul", { className: "List", onDragOver: onDragOver },
+        waypoints.map((waypoint, i) => (React.createElement("li", { key: `${waypoint.lat}${waypoint.lng}`, "data-id": i, draggable: true, onDragEnd: onDragEnd, onDragStart: onDragStart },
+            React.createElement("div", null,
+                React.createElement(Menu, null)),
+            React.createElement("span", { className: "listTitle" }, `Waypoint ${i + 1}`),
+            React.createElement(Trash, { onClick: () => {
+                    setWaypoints(waypoints.filter((w, index) => index !== i));
+                } })))),
+        React.createElement("li", { "data-id": waypoints.length, className: "lastPlaceholder" },
+            React.createElement("hr", null))));
 };
 export default List;
