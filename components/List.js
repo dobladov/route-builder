@@ -5,7 +5,7 @@ import '../styles/components/List.css';
 const placeholder = document.createElement('li');
 placeholder.innerHTML = 'Move here';
 placeholder.className = 'placeholder';
-const List = ({ waypoints, setWaypoints }) => {
+const List = ({ waypoints, setAndSaveWaypoints }) => {
     let dragged;
     let over;
     const onDragStart = (e) => {
@@ -29,7 +29,7 @@ const List = ({ waypoints, setWaypoints }) => {
         const from = Number(dragged.dataset.id);
         const to = Number(over.dataset.id);
         newWaypoints.splice(to, 0, newWaypoints.splice(from, 1)[0]);
-        setWaypoints(newWaypoints);
+        setAndSaveWaypoints(newWaypoints);
     };
     return (React.createElement("ul", { className: "List", onDragOver: onDragOver },
         waypoints.map((waypoint, i) => (React.createElement("li", { key: `${waypoint.lat}${waypoint.lng}`, "data-id": i, draggable: true, onDragEnd: onDragEnd, onDragStart: onDragStart },
@@ -37,7 +37,7 @@ const List = ({ waypoints, setWaypoints }) => {
                 React.createElement(Menu, null)),
             React.createElement("span", { className: "listTitle" }, `Waypoint ${i + 1}`),
             React.createElement("button", { type: "button", className: "listButton", onClick: () => {
-                    setWaypoints(waypoints.filter((w, index) => index !== i));
+                    setAndSaveWaypoints(waypoints.filter((w, index) => index !== i));
                 } },
                 React.createElement(Trash, null))))),
         React.createElement("li", { "data-id": waypoints.length, className: "lastPlaceholder" },

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import '../styles/components/Map.css';
-const Map = ({ waypoints, setWaypoints }) => {
+const Map = ({ waypoints, setAndSaveWaypoints }) => {
     const [map, setMap] = useState(null);
     const [layerPath, setLayerPath] = useState(null);
     // Removes a layer by the given Id
@@ -44,7 +44,7 @@ const Map = ({ waypoints, setWaypoints }) => {
     // Add the current latLng to the waypoints
     const handleClick = (e) => {
         const { latlng } = e;
-        setWaypoints([...waypoints, latlng]);
+        setAndSaveWaypoints([...waypoints, latlng]);
     };
     useEffect(() => {
         // Set up the map on mount
