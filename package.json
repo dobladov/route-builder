@@ -6,6 +6,7 @@
   "scripts": {
     "start": "parcel src/index.html",
     "build": "parcel build src/index.html",
+    "deploy": "parcel build src/index.html --public-url /route-builder",
     "test": "npm run lint && npm run ts",
     "lint": "eslint 'src/**/*.{js,ts,tsx}'",
     "ts": "tsc"
@@ -15,6 +16,7 @@
   "license": "ISC",
   "dependencies": {
     "@babel/plugin-transform-runtime": "^7.8.3",
+    "leaflet": "^1.6.0",
     "normalize.css": "^8.0.1",
     "parcel": "^1.12.4",
     "react": "^16.13.0",

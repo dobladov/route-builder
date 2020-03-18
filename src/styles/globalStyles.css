@@ -1,7 +1,25 @@
+:root {
+  --textColor: hsl(0, 0%, 98%);
+  --backgroundColor: hsl(0, 0%, 22%);
+  --contrastColor: hsl(74, 73%, 61%);
+  --subtleColor: hsl(0, 0%, 30%);
+  --iconsColor: hsl(0, 0%, 45%);
+}
+
 body {
-  background-color: hsl(0, 0%, 22%);
-  color: hsl(0, 0%, 98%);
+  background-color: var(--backgroundColor);
+  color: var(--textColor);
   font-size: 16px;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
 }
 
+.btn {
+  cursor: pointer;
+  background-color: var(--contrastColor);
+  padding: 15px 20px;
+  border: none;
+  border-radius: 10px;
+  color: black;
+  font-size: 1.2rem;
+  font-weight: bold;
+}

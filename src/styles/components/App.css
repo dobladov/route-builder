@@ -1,0 +1,23 @@
+.App.wrapper  {
+  display: flex;
+  height: 100vh;
+  max-height: 100vh;
+}
+
+.App aside {
+  flex: 1;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.App main {
+  flex: 3;
+  position: relative;
+}
+
+.App h1 {
+  border-bottom: 4px solid var(--subtleColor);
+  padding-bottom: 20px;
+}
