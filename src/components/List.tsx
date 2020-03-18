@@ -6,7 +6,7 @@ import '../styles/components/List.css';
 
 export interface Props {
   waypoints: Waypoint[]
-  setWaypoints: (waypoints: Waypoint[]) => void
+  setAndSaveWaypoints: (waypoints: Waypoint[]) => void
 }
 
 // Placeholder for dragging elements
@@ -14,7 +14,7 @@ const placeholder = document.createElement('li');
 placeholder.innerHTML = 'Move here';
 placeholder.className = 'placeholder';
 
-const List = ({ waypoints, setWaypoints }: Props) => {
+const List = ({ waypoints, setAndSaveWaypoints }: Props) => {
   let dragged;
   let over;
 
@@ -44,7 +44,7 @@ const List = ({ waypoints, setWaypoints }: Props) => {
     const to = Number(over.dataset.id);
 
     newWaypoints.splice(to, 0, newWaypoints.splice(from, 1)[0]);
-    setWaypoints(newWaypoints);
+    setAndSaveWaypoints(newWaypoints);
   };
 
   return (
@@ -70,7 +70,7 @@ const List = ({ waypoints, setWaypoints }: Props) => {
             type="button"
             className="listButton"
             onClick={() => {
-              setWaypoints(waypoints.filter((w, index) => index !== i));
+              setAndSaveWaypoints(waypoints.filter((w, index) => index !== i));
             }}
           >
             <Trash />

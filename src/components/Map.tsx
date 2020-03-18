@@ -8,10 +8,10 @@ import '../styles/components/Map.css';
 
 export interface Props {
   waypoints: Waypoint[]
-  setWaypoints: (waypoints: Waypoint[]) => void
+  setAndSaveWaypoints: (waypoints: Waypoint[]) => void
 }
 
-const Map = ({ waypoints, setWaypoints }:Props) => {
+const Map = ({ waypoints, setAndSaveWaypoints }:Props) => {
   const [map, setMap] = useState(null);
   const [layerPath, setLayerPath] = useState(null);
 
@@ -61,7 +61,7 @@ const Map = ({ waypoints, setWaypoints }:Props) => {
   // Add the current latLng to the waypoints
   const handleClick = (e) => {
     const { latlng } = e;
-    setWaypoints([...waypoints, latlng]);
+    setAndSaveWaypoints([...waypoints, latlng]);
   };
 
   useEffect(() => {

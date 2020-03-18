@@ -12,7 +12,14 @@ export interface Waypoint {
 }
 
 const App = () => {
-  const [waypoints, setWaypoints] = useState<Waypoint[]>([]);
+  const [waypoints, setWaypoints] = useState<Waypoint[]>(
+    JSON.parse(localStorage.getItem('waypoints')) || [],
+  );
+
+  const setAndSaveWaypoints = (newWaypoints) => {
+    localStorage.setItem('waypoints', JSON.stringify(newWaypoints));
+    setWaypoints(newWaypoints);
+  };
 
   return (
     <div className="App wrapper">
@@ -21,7 +28,7 @@ const App = () => {
 
         <List
           waypoints={waypoints}
-          setWaypoints={setWaypoints}
+          setAndSaveWaypoints={setAndSaveWaypoints}
         />
 
         {(waypoints.length > 0) && (
@@ -34,7 +41,7 @@ const App = () => {
       <main>
         <Map
           waypoints={waypoints}
-          setWaypoints={setWaypoints}
+          setAndSaveWaypoints={setAndSaveWaypoints}
         />
       </main>
     </div>
