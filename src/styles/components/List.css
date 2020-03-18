@@ -37,3 +37,8 @@
 .List .lastPlaceholder {
   opacity: 0;
 }
+
+.List .listButton {
+  background-color: transparent;
+  border: none;
+}

@@ -66,11 +66,15 @@ const List = ({ waypoints, setWaypoints }: Props) => {
           <span className="listTitle">
             {`Waypoint ${i + 1}`}
           </span>
-          <Trash
+          <button
+            type="button"
+            className="listButton"
             onClick={() => {
               setWaypoints(waypoints.filter((w, index) => index !== i));
             }}
-          />
+          >
+            <Trash />
+          </button>
         </li>
       ))}
       <li
