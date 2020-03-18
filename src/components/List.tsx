@@ -9,52 +9,58 @@ export interface Props {
   setWaypoints: (waypoints: Waypoint[]) => void
 }
 
-const List = ({ waypoints, setWaypoints }: Props) => {
-  let draggedItemIndex = null;
-  let newOrder = null;
+// Placeholder for dragging elements
+const placeholder = document.createElement('li');
+placeholder.innerHTML = 'Move here';
+placeholder.className = 'placeholder';
 
-  const onDragStart = (e, index) => {
-    draggedItemIndex = index;
+const List = ({ waypoints, setWaypoints }: Props) => {
+  let dragged;
+  let over;
+
+  const onDragStart = (e) => {
+    dragged = e.currentTarget;
     e.dataTransfer.effectAllowed = 'move';
-    e.dataTransfer.setData('text/html', e.target.parentNode);
-    e.dataTransfer.setDragImage(e.target.parentNode, 20, 20);
-    newOrder = null;
+    e.dataTransfer.setData('text/html', dragged);
+    e.dataTransfer.setDragImage(dragged, 20, 20);
   };
 
-  const onDragOver = (index) => {
-    const draggedOverItemIndex = index;
+  const onDragOver = (e) => {
+    e.preventDefault();
+    dragged.style.display = 'none';
 
-    // Do nothing if the item drags over itself
-    if (draggedItemIndex === draggedOverItemIndex) {
-      return;
+    if (e.target.dataset.id) {
+      over = e.target;
+      e.target.parentNode.insertBefore(placeholder, e.target);
     }
-
-    // Fix bug of dragging outside
-    const movedItem = waypoints[draggedItemIndex];
-    newOrder = waypoints.slice();
-    newOrder.splice(draggedItemIndex, 1);
-    newOrder.splice(draggedOverItemIndex, 0, movedItem);
   };
 
   const onDragEnd = () => {
-    if (newOrder) {
-      setWaypoints(newOrder);
-      newOrder = null;
-    }
+    dragged.style.display = 'flex';
+    dragged.parentNode.removeChild(placeholder);
+
+    const newWaypoints = waypoints.slice();
+    const from = Number(dragged.dataset.id);
+    const to = Number(over.dataset.id);
+
+    newWaypoints.splice(to, 0, newWaypoints.splice(from, 1)[0]);
+    setWaypoints(newWaypoints);
   };
 
   return (
-    <ul className="List">
+    <ul
+      className="List"
+      onDragOver={onDragOver}
+    >
       {waypoints.map((waypoint, i) => (
         <li
           key={`${waypoint.lat}${waypoint.lng}`}
-          onDragOver={() => onDragOver(i)}
+          data-id={i}
+          draggable
+          onDragEnd={onDragEnd}
+          onDragStart={onDragStart}
         >
-          <div
-            draggable
-            onDragStart={(e) => onDragStart(e, i)}
-            onDragEnd={onDragEnd}
-          >
+          <div>
             <Menu />
           </div>
           <span className="listTitle">
@@ -67,6 +73,12 @@ const List = ({ waypoints, setWaypoints }: Props) => {
           />
         </li>
       ))}
+      <li
+        data-id={waypoints.length}
+        className="lastPlaceholder"
+      >
+        <hr />
+      </li>
     </ul>
   );
 };

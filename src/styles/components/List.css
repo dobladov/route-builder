@@ -26,3 +26,14 @@
   font-weight: bold;
   font-size: 1.3rem;
 }
+
+.List .placeholder {
+  display: block;
+  text-align: center;
+  border: 1px dashed var(--iconsColor);
+  color: var(--iconsColor);
+}
+
+.List .lastPlaceholder {
+  opacity: 0;
+}
