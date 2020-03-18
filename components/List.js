@@ -36,9 +36,10 @@ const List = ({ waypoints, setWaypoints }) => {
             React.createElement("div", null,
                 React.createElement(Menu, null)),
             React.createElement("span", { className: "listTitle" }, `Waypoint ${i + 1}`),
-            React.createElement(Trash, { onClick: () => {
+            React.createElement("button", { type: "button", className: "listButton", onClick: () => {
                     setWaypoints(waypoints.filter((w, index) => index !== i));
-                } })))),
+                } },
+                React.createElement(Trash, null))))),
         React.createElement("li", { "data-id": waypoints.length, className: "lastPlaceholder" },
             React.createElement("hr", null))));
 };
